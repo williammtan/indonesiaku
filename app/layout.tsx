@@ -37,7 +37,7 @@ export default function RootLayout({
 		<html lang="en">
 			<head>
 				<meta charSet="utf-8" />
-				<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+				<link rel="icon" href="/favicon.png" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
 				<GoogleAnalytics gaId="G-GR14KZBHS4" />
