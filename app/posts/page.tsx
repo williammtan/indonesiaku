@@ -27,10 +27,8 @@ export default async function PostsPage() {
                 id,
                 username
             )
-        `);
-    
-    console.log(error)
-    console.log(posts)
+        `)
+        // .gte('created_at', new Date().toISOString());
 
 	return (
 		<div className="w-full max-w-3xl mx-auto space-y-4 p-4">

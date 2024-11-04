@@ -55,7 +55,8 @@ export default async function DataPage({ searchParams }: PageProps) {
 	// Get the total count
 	const { count } = await supabase
 		.from("translations")
-		.select("*", { count: "exact", head: true });
+		.select("*", { count: "exact", head: true })
+		.filter('created_at', 'gte', new Date().toISOString())
 
 	// Get the data for the current page
 	const { data: translations, error } = await supabase
@@ -72,6 +73,8 @@ export default async function DataPage({ searchParams }: PageProps) {
                 name
             )`
 		)
+		// .gte('created_at', new Date().toISOString())
+		.filter('created_at', 'gte', new Date().toISOString())
 		.range((currentPage - 1) * pageSize, currentPage * pageSize - 1)
 		.order("id", { ascending: false });
 
