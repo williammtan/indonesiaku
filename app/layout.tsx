@@ -10,6 +10,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import AuthMenu from "@/components/auth-menu";
 import { createClient } from "@/lib/supabase/server";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -34,6 +35,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
+			<head>
+				<meta charSet="utf-8" />
+				<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+				<GoogleAnalytics gaId="G-GR14KZBHS4" />
+			</head>
 				<body
 					className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 				>
