@@ -48,11 +48,6 @@ export async function POST(request: NextRequest) {
 				tgt_lang: targetLanguage.nllb_code,
 			}),
 		});
-		console.log({
-			source: [text],
-			src_lang: sourceLanguage.nllb_code,
-			tgt_lang: targetLanguage.nllb_code,
-		})
 
 		if (!nllbResponse.ok) {
 			return NextResponse.json(
