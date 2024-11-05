@@ -11,6 +11,7 @@ import { siteConfig } from "@/config/site";
 import AuthMenu from "@/components/auth-menu";
 import { createClient } from "@/lib/supabase/server";
 import { GoogleAnalytics } from '@next/third-parties/google'
+import Footer from "@/components/footer";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -34,7 +35,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" className="scroll-smooth">
 			<head>
 				<meta charSet="utf-8" />
 				<link rel="icon" href="/favicon.png" />
@@ -56,6 +57,7 @@ export default function RootLayout({
 					<main className="h-full min-h-screen flex flex-col items-center">
 						{children}
 					</main>
+					<Footer />
 				</body>
 		</html>
 	);
