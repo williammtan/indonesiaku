@@ -12,15 +12,18 @@ const Welcome = () => {
                 J
             </AvatarFallback>
                 </Avatar>
-        <p className="text-m">Halo, isa tak bantu apa?</p>
+        <p className="text-m">Halo, isa tak bantu opo?</p>
       </div>
     );
   };
 
 export default function JonoPage() {
     const threadConfig = {
+      assistantAvatar: {
+        fallback: "J"
+      },
         components: {
-          ThreadWelcome: Welcome
+          ThreadWelcome: Welcome,
         }
       };
   return (
