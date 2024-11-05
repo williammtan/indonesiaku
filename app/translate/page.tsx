@@ -16,7 +16,7 @@ const allLanguages = [
   { name: "Indonesian", nllb_code: "ind_Latn" },
   { name: "Balinese", nllb_code: "ban_Latn" },
   { name: "Minangkabau", nllb_code: "min_Latn" },
-  { name: "Acehnese", nllb_code: "ace_Cyrl" },
+  { name: "Acehnese", nllb_code: "ace_Latn" },
   { name: "Buginese", nllb_code: "bug_Latn" },
   { name: "Banjarese", nllb_code: "bjn_Latn" },
   { name: "Javanese", nllb_code: "jav_Latn" },
