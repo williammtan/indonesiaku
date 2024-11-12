@@ -52,6 +52,6 @@ jobs:
       - name: 'Use gcloud CLI'
         run: gcloud compute ssh indonesiaku-webserver --zone ${{ env.ZONE }} --command "
           cd /workspace &&
-          git clone https://github.com/williammtan/indonesiaku.git &&
+          if cd indonesiaku; then git pull; else git clone https://github.com/williammtan/indonesiaku.git indonesiaku; fi &&
           docker-compose pull indonesiaku-service &&
           docker-compose up -d --remove-orphans"
