@@ -35,7 +35,7 @@ jobs:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
       
       - name: 'Authenticate docker with gcloud'
-        run: 'sudo apt-get update && sudo apt-get install google-cloud-cli-docker-credential-gcr && docker-credential-gcr configure-docker'
+        run: 'gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev'
 
       - name: 'Build and Push Container'
         run: |-
@@ -49,4 +49,4 @@ jobs:
           version: '>= 363.0.0'
 
       - name: 'Use gcloud CLI'
-        run: 'gcloud compute ssh indonesiaku-webserver --region us-central1 --command "DOCKER_TAG="$${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}" && docker pull $DOCKER_TAG && docker run -d -p 3000:3000 $DOCKER_TAG"'
+        run: 'gcloud compute ssh indonesiaku-webserver --region us-central1 --command "DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}" && docker pull $DOCKER_TAG && docker run -d -p 3000:3000 $DOCKER_TAG"'
