@@ -50,4 +50,8 @@ jobs:
           version: '>= 363.0.0'
 
       - name: 'Use gcloud CLI'
-        run: gcloud compute ssh indonesiaku-webserver --zone ${{ env.ZONE }} --command "sudo docker pull ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }} && sudo docker run -d -p 3000:3000 ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
+        run: gcloud compute ssh indonesiaku-webserver --zone ${{ env.ZONE }} --command "
+          sudo docker pull ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }} && \
+          sudo docker ps -q --filter ancestor=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }} | \
+          xargs -r sudo docker stop && \
+          sudo docker run -d -p 3000:3000 ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
