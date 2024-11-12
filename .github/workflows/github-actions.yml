@@ -33,6 +33,9 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      
+      - name: 'Authenticate docker with gcloud'
+        run: 'gcloud auth configure-docker'
 
       - name: 'Build and Push Container'
         run: |-
