@@ -35,7 +35,7 @@ jobs:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
       
       - name: 'Authenticate docker with gcloud'
-        run: 'gcloud auth configure-docker'
+        run: 'gcloud components install docker-credential-gcr && docker-credential-gcr configure-docker'
 
       - name: 'Build and Push Container'
         run: |-
