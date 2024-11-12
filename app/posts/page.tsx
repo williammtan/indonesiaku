@@ -1,34 +1,45 @@
 import PostCard from "@/components/post-card";
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from "@/lib/supabase/server";
+import { notFound } from "next/navigation";
 
-interface Post {
+interface Profile {
+	id: string;
+	username: string;
+}
+
+interface PostData {
 	id: string;
 	title: string;
 	content: string;
-	images?: string[];
-	createdAt: Date;
-	updatedAt: Date;
+	created_at: string;
 	views: number;
-
-	user: {
-		id: string;
-		name: string;
-	};
-	userId: string;
+	profiles: Profile;
 }
 
 export default async function PostsPage() {
-    const supabase = await createClient();
+	const supabase = await createClient();
 	const { data: posts, error } = await supabase
-        .from("posts")
-        .select(`
-            id, title, created_at, content, views,
-            profiles (
-                id,
-                username
-            )
-        `)
-        // .gte('created_at', new Date().toISOString());
+		.from("posts")
+		.select(
+			`
+      id, title, created_at, content, views,
+      profiles (
+        id,
+        username
+      )
+    `
+		)
+		.returns<PostData[]>();
+	// .gte('created_at', new Date().toISOString());
+
+	if (error) {
+		throw error;
+	}
+
+	if (!posts) {
+		return <div>No posts found</div>;
+		// Or alternatively: notFound();
+	}
 
 	return (
 		<div className="w-full max-w-3xl mx-auto space-y-4 p-4">
@@ -43,7 +54,7 @@ export default async function PostsPage() {
 					user={{
 						name: post.profiles.username,
 						avatarUrl: "/placeholder.svg",
-					}} // Temporary avatar
+					}}
 				/>
 			))}
 		</div>

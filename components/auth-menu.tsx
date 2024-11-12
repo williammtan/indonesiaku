@@ -12,7 +12,7 @@ export default async function AuthMenu() {
     let metadata = user?.user_metadata
 	return (
 		<nav className="flex items-center">
-			{user ? (
+			{(user && user.email) ? (
 				<ProfileMenu username={metadata?.username} email={user.email} />
 			) : (
 				<div className="flex gap-2 mx-6">

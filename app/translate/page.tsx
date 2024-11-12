@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { useDebounce } from "@/lib/useDebounce"; // Import the debounce hook
+import { useDebounce } from "@/lib/useDebounce";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,9 +10,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeftRight, ChevronDown, Mic } from "lucide-react";
+import { ArrowLeftRight, ChevronDown } from "lucide-react";
 
-const allLanguages = [
+interface Language {
+  name: string;
+  nllb_code: string;
+}
+
+const allLanguages: Language[] = [
   { name: "English", nllb_code: "eng_Latn" },
   { name: "Indonesian", nllb_code: "ind_Latn" },
   { name: "Balinese", nllb_code: "ban_Latn" },
@@ -25,25 +30,25 @@ const allLanguages = [
 ];
 
 export default function Component() {
-  const [sourceText, setSourceText] = useState("");
-  const [translatedText, setTranslatedText] = useState("");
-  const [isTranslating, setIsTranslating] = useState(false);
-  const [sourceLang, setSourceLang] = useState(allLanguages[0]);
-  const [targetLang, setTargetLang] = useState(allLanguages[1]);
-  const [visibleSourceLangs, setVisibleSourceLangs] = useState([
+  const [sourceText, setSourceText] = useState<string>("");
+  const [translatedText, setTranslatedText] = useState<string>("");
+  const [isTranslating, setIsTranslating] = useState<boolean>(false);
+  const [sourceLang, setSourceLang] = useState<Language>(allLanguages[0]);
+  const [targetLang, setTargetLang] = useState<Language>(allLanguages[1]);
+  const [visibleSourceLangs, setVisibleSourceLangs] = useState<Language[]>([
     allLanguages[0],
     allLanguages[1],
     allLanguages[2],
   ]);
-  const [visibleTargetLangs, setVisibleTargetLangs] = useState([
+  const [visibleTargetLangs, setVisibleTargetLangs] = useState<Language[]>([
     allLanguages[1],
     allLanguages[0],
     allLanguages[2],
   ]);
-  const debouncedSourceText = useDebounce(sourceText, 500); // Debounce with a 500ms delay
+  const debouncedSourceText = useDebounce(sourceText, 500);
 
   const updateVisibleLanguages = useCallback(
-    (currentVisible, selected) => {
+    (currentVisible: Language[], selected: Language): Language[] => {
       const newVisible = [
         selected,
         ...currentVisible.filter((lang) => lang.name !== selected.name),
@@ -54,7 +59,7 @@ export default function Component() {
   );
 
   const handleLanguageChange = useCallback(
-    (lang, isSource) => {
+    (lang: Language, isSource: boolean) => {
       if (isSource) {
         setSourceLang(lang);
         setVisibleSourceLangs((prev) => updateVisibleLanguages(prev, lang));
@@ -81,50 +86,52 @@ export default function Component() {
       setSourceText(translatedText[0]);
       handleTranslation(sourceText, targetLang, sourceLang);
     }
-  }, [sourceLang, targetLang, sourceText, updateVisibleLanguages]);
+  }, [sourceLang, targetLang, sourceText, translatedText, updateVisibleLanguages]);
 
-  const handleTranslation = useCallback(async (text: string, srcLang = sourceLang, tgtLang = targetLang) => {
-    if (!text || !text.trim()) {
-      setTranslatedText("");
-      setIsTranslating(false);
-      return;
-    }
-
-    setIsTranslating(true);
-    try {
-      const response = await fetch("/api/translate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sourceLanguage: srcLang,
-          targetLanguage: tgtLang,
-          text: text,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Translation failed");
+  const handleTranslation = useCallback(
+    async (text: string, srcLang: Language = sourceLang, tgtLang: Language = targetLang) => {
+      if (!text || !text.trim()) {
+        setTranslatedText("");
+        setIsTranslating(false);
+        return;
       }
 
-      const data = await response.json();
-      setTranslatedText(data.translatedText);
-    } catch (error) {
-      console.error("Translation error:", error);
-      setTranslatedText("Translation error occurred. Please try again.");
-    } finally {
-      setIsTranslating(false);
-    }
-  }, [sourceLang, targetLang]);
+      setIsTranslating(true);
+      try {
+        const response = await fetch("/api/translate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+          sourceLanguage: srcLang,
+          targetLanguage: tgtLang,
+            text: text,
+          }),
+        });
 
-  // Use effect to trigger translation when debounced text changes
+        if (!response.ok) {
+          throw new Error("Translation failed");
+        }
+
+        const data = await response.json();
+        setTranslatedText(data.translatedText);
+      } catch (error) {
+        console.error("Translation error:", error);
+        setTranslatedText("Translation error occurred. Please try again.");
+      } finally {
+        setIsTranslating(false);
+      }
+    },
+    [sourceLang, targetLang]
+  );
+
   useEffect(() => {
     handleTranslation(debouncedSourceText);
   }, [debouncedSourceText, handleTranslation]);
 
   const renderLanguageTabs = useCallback(
-    (languages, selectedLang, isSource) => (
+    (languages: Language[], selectedLang: Language, isSource: boolean) => (
       <div className="flex items-center gap-2 overflow-x-auto">
         {languages.map((lang) => (
           <Button
@@ -145,7 +152,7 @@ export default function Component() {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {allLanguages
-              .filter((lang) => !languages.find(l => l.name === lang.name))
+              .filter((lang) => !languages.find((l: Language) => l.name === lang.name))
               .map((lang) => (
                 <DropdownMenuItem
                   key={lang.name}
@@ -164,11 +171,8 @@ export default function Component() {
   return (
     <div className="w-full max-w-6xl mx-auto p-4 m-5">
       <div className="space-y-2">
-        {/* Language Selection Row */}
         <div className="grid md:grid-cols-[1fr,auto,1fr] gap-4 items-center">
-          <div>
-            {renderLanguageTabs(visibleSourceLangs, sourceLang, true)}
-          </div>
+          <div>{renderLanguageTabs(visibleSourceLangs, sourceLang, true)}</div>
 
           <Button
             variant="ghost"
@@ -180,29 +184,22 @@ export default function Component() {
             <ArrowLeftRight className="h-4 w-4" />
           </Button>
 
-          <div>
-            {renderLanguageTabs(visibleTargetLangs, targetLang, false)}
-          </div>
+          <div>{renderLanguageTabs(visibleTargetLangs, targetLang, false)}</div>
         </div>
 
-        {/* Text Areas Row */}
         <div className="grid md:grid-cols-2 gap-4">
           <div className="relative">
             <Textarea
               value={sourceText}
               onChange={(e) => {
                 setSourceText(e.target.value);
-                setIsTranslating(true); // Set translating state to true when typing
+                setIsTranslating(true);
               }}
               placeholder="Enter text"
               className="min-h-[200px] text-lg rounded-md p-4"
               maxLength={5000}
             />
             <div className="absolute right-3 bottom-3 flex flex-col gap-2">
-              {/* <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Mic className="h-4 w-4" />
-                <span className="sr-only">Voice input</span>
-              </Button> */}
               <div className="text-xs text-muted-foreground">
                 {sourceText.length} / 5,000
               </div>

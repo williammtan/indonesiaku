@@ -10,19 +10,25 @@ import { indexMultiple } from "@/lib/utils"
 
 import { DataTablePagination } from "./data-table-pagination"
 
+type NestedKeyOf<ObjectType> = {
+  [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
+    ? `${Key}.${NestedKeyOf<ObjectType[Key]>}`
+    : `${Key}`
+}[keyof ObjectType & (string | number)];
+
 interface Column<T> {
-  accessorKey: keyof T
-  header: string
-  cell?: (value: any) => React.ReactNode
+  accessorKey: NestedKeyOf<T>;
+  header: string;
+  cell?: (value: any) => React.ReactNode;
 }
 
 interface DataTableProps<T> {
-  columns: Column<T>[]
-  data: T[]
-  pageCount: number
-  currentPage: number
-  pageSize: number
-  totalItems: number
+  columns: Column<T>[];
+  data: T[];
+  pageCount: number;
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
 }
 
 export function DataTable<T>({

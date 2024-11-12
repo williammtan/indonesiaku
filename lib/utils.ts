@@ -53,9 +53,8 @@ export function encodedRedirect(
 
 
 export function indexMultiple(obj: any, key: any) {
-  key.split('.').forEach((k) => {
+  key.split('.').forEach((k: any) => {
     obj = obj[k]
-    console.log(obj)
   })
   return obj;
 }

@@ -1,10 +1,34 @@
 import { createClient } from "@/lib/supabase/server";
 import { DataTable } from "@/components/data-table";
-import { Cross2Icon } from "@radix-ui/react-icons"
+import { Cross2Icon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const columns = [
+type Translation = {
+	source_text: string;
+	target_text: string;
+	proficiency: number;
+	source_language_id: { name: string };
+	target_language_id: { name: string };
+	profiles: { username: string };
+};
+
+// Custom type to allow nested paths
+type NestedKeyOf<ObjectType extends object> = {
+	[Key in keyof ObjectType &
+		(string | number)]: ObjectType[Key] extends object
+		? `${Key}.${NestedKeyOf<ObjectType[Key]>}`
+		: `${Key}`;
+}[keyof ObjectType & (string | number)];
+
+// Update the Column interface with the object constraint
+interface CustomColumn<T extends object> {
+	accessorKey: NestedKeyOf<T>;
+	header: string;
+	cell?: (value: any) => React.ReactNode;
+}
+
+const columns: CustomColumn<Translation>[] = [
 	{
 		accessorKey: "source_text",
 		header: "Source Text",
@@ -38,7 +62,7 @@ const columns = [
 		accessorKey: "profiles.username",
 		header: "User",
 	},
-] as const;
+];
 
 interface PageProps {
 	searchParams: {
@@ -56,30 +80,28 @@ export default async function DataPage({ searchParams }: PageProps) {
 	const { count } = await supabase
 		.from("translations")
 		.select("*", { count: "exact", head: true })
-		.filter('created_at', 'gte', new Date().toISOString())
+		.filter("created_at", "gte", new Date().toISOString());
 
 	// Get the data for the current page
 	const { data: translations, error } = await supabase
 		.from("translations")
 		.select(
 			`*,
-            profiles (
-                username 
-            ),
-            source_language_id:languages!translations_source_language_id_fkey (
-                name
-            ),
-            target_language_id:languages!translations_target_language_id_fkey (
-                name
-            )`
+          profiles (
+              username 
+          ),
+          source_language_id:languages!translations_source_language_id_fkey (
+              name
+          ),
+          target_language_id:languages!translations_target_language_id_fkey (
+              name
+          )`
 		)
-		// .gte('created_at', new Date().toISOString())
-		.filter('created_at', 'gte', new Date().toISOString())
+		.filter("created_at", "gte", new Date().toISOString())
 		.range((currentPage - 1) * pageSize, currentPage * pageSize - 1)
 		.order("id", { ascending: false });
 
 	if (error) {
-		console.log(error);
 		return (
 			<div className="flex h-[calc(100vh-4rem)] items-center justify-center">
 				<p className="text-red-600">Failed to load translations</p>
@@ -95,13 +117,11 @@ export default async function DataPage({ searchParams }: PageProps) {
 			<div className="flex items-center justify-end">
 				<div className="mb-2">
 					<Button className="h-8 px-2 lg:px-3">
-						<Link href="/data/new">
-							Add Translation
-						</Link>
+						<Link href="/data/new">Add Translation</Link>
 					</Button>
 				</div>
 			</div>
-			<DataTable
+			<DataTable<Translation>
 				columns={columns}
 				data={translations || []}
 				pageCount={pageCount}

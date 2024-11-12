@@ -5,6 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
+// Create a wrapper function that handles the error response
+const handleSignUp = async (formData: FormData) => {
+  const result = await signUpAction(formData);
+  if (result.error) {
+    return;
+  }
+};
+
 export default async function Signup(props: {
   searchParams: Promise<Message>;
 }) {
@@ -28,8 +36,8 @@ export default async function Signup(props: {
           </Link>
         </p>
         <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
-        <Label htmlFor="username">Username</Label>
-        <Input name="username" placeholder="Your Username" required />
+          <Label htmlFor="username">Username</Label>
+          <Input name="username" placeholder="Your Username" required />
           <Label htmlFor="email">Email</Label>
           <Input name="email" placeholder="you@example.com" required />
           <Label htmlFor="password">Password</Label>
@@ -40,7 +48,7 @@ export default async function Signup(props: {
             minLength={6}
             required
           />
-          <SubmitButton formAction={signUpAction} pendingText="Signing up...">
+          <SubmitButton formAction={handleSignUp} pendingText="Signing up...">
             Sign up
           </SubmitButton>
           <FormMessage message={searchParams} />
