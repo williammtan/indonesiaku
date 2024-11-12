@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useDebounce } from "@/lib/useDebounce"; // Import the debounce hook
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -39,6 +40,7 @@ export default function Component() {
     allLanguages[0],
     allLanguages[2],
   ]);
+  const debouncedSourceText = useDebounce(sourceText, 500); // Debounce with a 500ms delay
 
   const updateVisibleLanguages = useCallback(
     (currentVisible, selected) => {
@@ -79,9 +81,10 @@ export default function Component() {
     }
   }, [sourceLang, targetLang, sourceText, updateVisibleLanguages]);
 
-  const handleTranslation = async (text: string, srcLang = sourceLang, tgtLang = targetLang) => {
+  const handleTranslation = useCallback(async (text: string, srcLang = sourceLang, tgtLang = targetLang) => {
     if (!text.trim()) {
       setTranslatedText("");
+      setIsTranslating(false);
       return;
     }
 
@@ -111,7 +114,12 @@ export default function Component() {
     } finally {
       setIsTranslating(false);
     }
-  };
+  }, [sourceLang, targetLang]);
+
+  // Use effect to trigger translation when debounced text changes
+  useEffect(() => {
+    handleTranslation(debouncedSourceText);
+  }, [debouncedSourceText, handleTranslation]);
 
   const renderLanguageTabs = useCallback(
     (languages, selectedLang, isSource) => (
@@ -182,7 +190,7 @@ export default function Component() {
               value={sourceText}
               onChange={(e) => {
                 setSourceText(e.target.value);
-                handleTranslation(e.target.value);
+                setIsTranslating(true); // Set translating state to true when typing
               }}
               placeholder="Enter text"
               className="min-h-[200px] text-lg rounded-md p-4"
