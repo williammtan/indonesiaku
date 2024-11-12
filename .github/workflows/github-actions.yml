@@ -35,7 +35,7 @@ jobs:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
       
       - name: 'Authenticate docker with gcloud'
-        run: 'sudo apt-get install google-cloud-cli-docker-credential-gcr && docker-credential-gcr configure-docker'
+        run: 'sudo apt-get update && sudo apt-get install google-cloud-cli-docker-credential-gcr && docker-credential-gcr configure-docker'
 
       - name: 'Build and Push Container'
         run: |-
