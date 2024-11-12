@@ -9,7 +9,7 @@ on:
 env:
   PROJECT_ID: 'lofty-entropy-418903' # TODO: update to your Google Cloud project ID
   REGION: 'us-central1' # TODO: update to your region
-  SERVICE: 'indonesiaku' # TODO: update to your service name
+  SERVICE: 'indonesiaku/webserver' # TODO: update to your service name
   WORKLOAD_IDENTITY_PROVIDER: 'projects/396235981273/locations/global/workloadIdentityPools/github/providers/indonesiaku' # TODO: update to your workload identity provider
 
 jobs:
@@ -38,13 +38,10 @@ jobs:
         run: 'gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev'
 
       - name: 'Build and Push Container'
-        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
-        with:
-          registry: gcr.io
-          project_id: '${{ env.PROJECT_ID }}'
-          image_name: '${{ env.SERVICE }}'
-          image_tag: test-${{ github.sha }}, ${{ github.sha }}
-          dockerfile: ./Dockerfile
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
+          docker build --tag "${DOCKER_TAG}" .
+          docker push "${DOCKER_TAG}"
 
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
