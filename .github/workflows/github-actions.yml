@@ -1,9 +1,10 @@
 name: 'Build and Deploy to Production'
+run-name: ${{ github.actor }} is pushing to production! 🚀
 
 on:
   push:
     branches:
-      - '"main"'
+      - 'main'
 
 env:
   PROJECT_ID: 'lofty-entropy-418903' # TODO: update to your Google Cloud project ID
