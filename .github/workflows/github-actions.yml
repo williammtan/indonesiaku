@@ -9,6 +9,7 @@ on:
 env:
   PROJECT_ID: 'lofty-entropy-418903' # TODO: update to your Google Cloud project ID
   REGION: 'us-central1' # TODO: update to your region
+  ZONE: 'us-central1-a' # TODO: update to your region
   SERVICE: 'indonesiaku/webserver' # TODO: update to your service name
   WORKLOAD_IDENTITY_PROVIDER: 'projects/396235981273/locations/global/workloadIdentityPools/github/providers/indonesiaku' # TODO: update to your workload identity provider
 
@@ -49,4 +50,4 @@ jobs:
           version: '>= 363.0.0'
 
       - name: 'Use gcloud CLI'
-        run: 'gcloud compute ssh indonesiaku-webserver --region us-central1 --command "DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}" && docker pull $DOCKER_TAG && docker run -d -p 3000:3000 $DOCKER_TAG"'
+        run: 'gcloud compute ssh indonesiaku-webserver --zone ${{ env.ZONE }} --command "DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}" && docker pull $DOCKER_TAG && docker run -d -p 3000:3000 $DOCKER_TAG"'
