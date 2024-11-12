@@ -1,4 +1,4 @@
-version: '1'
+version: '3'
 services:
   indonesiaku-service:
     image: "us-central1-docker.pkg.dev/lofty-entropy-418903/indonesiaku/webserver:latest"
