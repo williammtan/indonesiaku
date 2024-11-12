@@ -77,12 +77,14 @@ export default function Component() {
     setVisibleTargetLangs((prev) => updateVisibleLanguages(prev, sourceLang));
     // Translate with swapped languages if there's text
     if (sourceText.trim()) {
+      // Backtranslate by setting the new source as the previous target
+      setSourceText(translatedText[0]);
       handleTranslation(sourceText, targetLang, sourceLang);
     }
   }, [sourceLang, targetLang, sourceText, updateVisibleLanguages]);
 
   const handleTranslation = useCallback(async (text: string, srcLang = sourceLang, tgtLang = targetLang) => {
-    if (!text.trim()) {
+    if (!text || !text.trim()) {
       setTranslatedText("");
       setIsTranslating(false);
       return;
