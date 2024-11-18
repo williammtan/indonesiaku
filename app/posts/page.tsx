@@ -16,6 +16,9 @@ interface PostData {
 	profiles: Profile;
 }
 
+export const fetchCache = 'force-no-store';
+export const revalidate = 60
+
 export default async function PostsPage() {
 	const supabase = await createClient();
 	const { data: posts, error } = await supabase

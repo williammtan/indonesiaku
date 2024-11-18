@@ -53,6 +53,15 @@ export default async function PostView({
 		day: "numeric",
 	});
 
+	const { error: incrementError } = await supabase
+		.from("posts")
+		.update({ views: post.views + 1 })
+		.eq("id", post.id);
+
+	if (incrementError) {
+		throw incrementError;
+	}
+
 	return (
 		<div className="max-w-4xl mx-auto px-4 py-8">
 			<article className="space-y-8">
