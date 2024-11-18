@@ -1,6 +1,5 @@
 import PostCard from "@/components/post-card";
 import { createClient } from "@/lib/supabase/server";
-import { notFound } from "next/navigation";
 
 interface Profile {
 	id: string;
@@ -21,7 +20,7 @@ export const revalidate = 60
 
 export default async function PostsPage() {
 	const supabase = await createClient();
-	const { data: posts, error } = await supabase
+	let { data: posts, error } = await supabase
 		.from("posts")
 		.select(
 			`
