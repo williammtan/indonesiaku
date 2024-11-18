@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeftRight, ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 interface Language {
   name: string;
@@ -220,7 +221,9 @@ export default function Component() {
 
       <div className="flex justify-end mt-4">
         <Button variant="link" className="text-xs text-muted-foreground">
-          Send feedback
+          <Link href="/data">
+            Help improve translations
+          </Link>
         </Button>
       </div>
     </div>
