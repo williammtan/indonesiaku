@@ -41,8 +41,8 @@ export default function Home() {
                 number: "71%",
                 text: "of Indonesians Speak Multiple Languages",
               },
-              { number: "55M", text: "People Don't Speak Bahasa Indonesia" },
-              { number: "90%", text: "Languages at Risk by 2123" },
+              { number: "55 M", text: "People Don't Speak Bahasa Indonesia" },
+              { number: "90%", text: "Languages at Risk for Extinction by 2124" },
             ].map((stat, index) => (
               <Card key={index}>
                 <CardHeader>
@@ -67,6 +67,12 @@ export default function Home() {
             <FlipWords words={words} />
           </span>
         </h2>
+      </section>
+
+      <section id="statement" className="py-1 px-4 flex justify-center items-center text-center ">
+        <p className="text-2xl">
+          We have a vision where every Indonesian language preserved, celebrated, and actively used
+         </p>
       </section>
 
       {/* Solution Section */}
@@ -154,9 +160,14 @@ export default function Home() {
             Help us preserve Indonesia's linguistic heritage for future
             generations. Your support makes our work possible.
           </p>
-          <Button size="lg">
-            <Link href="/data">Contribute</Link>
-          </Button>
+          <div className="flex justify-center gap-4">
+            <Button size="lg">
+              <Link href="/data">Contribute</Link>
+            </Button>
+            <Button variant="outline" size="lg" className="bg-gray-50">
+              <Link href="/posts/2">Learn more</Link>
+            </Button>
+          </div>
         </div>
       </section>
     </div>

@@ -12,10 +12,6 @@ export default function Footer() {
               Indonesiaku: A non-profit initiative preserving Indonesia's
               languages through AI
             </p>
-            <p className="">
-              Vision: Every Indonesian language preserved, celebrated, and
-              actively used
-            </p>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
