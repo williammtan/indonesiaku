@@ -47,16 +47,16 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/translator"
+                  href="https://github.com/williammtan/indonesiaku"
                   className="flex items-center gap-2 hover:text-white"
                 >
                   <Github className="w-5 h-5" />
-                  Github
+                  <code className="text-m"> williammtan/indonesiaku </code>
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/docs"
+                  href="https://arxiv.org/abs/2410.07830"
                   className="flex items-center gap-2 hover:text-white"
                 >
                   <FileText className="w-5 h-5" />
@@ -69,7 +69,7 @@ export default function Footer() {
                   className="flex items-center gap-2 hover:text-white"
                 >
                   <Users className="w-5 h-5" />
-                  Contact us
+                  Collaborate with us
                 </Link>
               </li>
             </ul>
