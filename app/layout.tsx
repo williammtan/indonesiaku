@@ -25,7 +25,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-	title: "IndonesiaKu",
+	title: "Indonesiaku",
 	description: "Preserving Indonesia's Languages Together",
 };
 
