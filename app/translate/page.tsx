@@ -12,6 +12,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeftRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
+import TranslatorAlert from './alert';
 
 interface Language {
   name: string;
@@ -58,6 +59,8 @@ export default function Component() {
     },
     []
   );
+
+
 
   const handleLanguageChange = useCallback(
     (lang: Language, isSource: boolean) => {
@@ -171,6 +174,7 @@ export default function Component() {
 
   return (
     <div className="w-full max-w-6xl mx-auto p-4 m-5">
+    <TranslatorAlert />
       <div className="space-y-2">
         <div className="grid md:grid-cols-[1fr,auto,1fr] gap-4 items-center">
           <div>{renderLanguageTabs(visibleSourceLangs, sourceLang, true)}</div>
