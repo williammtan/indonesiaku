@@ -174,7 +174,7 @@ export default function Component() {
 
   return (
     <div className="w-full max-w-6xl mx-auto p-4 m-5">
-    <TranslatorAlert />
+    {/* <TranslatorAlert /> */}
       <div className="space-y-2">
         <div className="grid md:grid-cols-[1fr,auto,1fr] gap-4 items-center">
           <div>{renderLanguageTabs(visibleSourceLangs, sourceLang, true)}</div>
