@@ -4,6 +4,7 @@ import { SearchInterface } from "@/components/search-interface";
 import { Overview } from "@/components/overview";
 import { CorpusChart } from "@/components/corpus-chart";
 import { redirect } from "next/navigation";
+import { HuggingFaceButton } from "@/components/huggingface-button"
 
 interface PageProps {
   searchParams: {
@@ -86,6 +87,7 @@ export default async function DataPage({ searchParams }: PageProps) {
       <SearchInterface languages={languages || []} languagePairs={languagePairs || []} />
       <Overview stats={stats} />
       <CorpusChart data={distributionData} />
+	  <HuggingFaceButton />
     </main>
   );
 }
