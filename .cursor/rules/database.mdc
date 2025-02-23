@@ -1,0 +1,71 @@
+---
+description: Supabase Database
+globs: 
+---
+Implementation Example:
+import { createClient } from "@/lib/supabase/server";
+
+const supabase = await createClient();
+
+	// Get the total count
+	const { count } = await supabase
+		.from("translations")
+    .select("*", { count: "exact", head: true })
+		.filter("created_at", "lte", new Date().toISOString());
+
+Schema:
+
+create table profiles (
+  id uuid default uuid_generate_v4() primary key,
+  username text,
+  created_at timestamp default now() not null
+);
+
+create table languages (
+  id bigint not null primary key,
+  name text not null,
+  code text not null,
+  nllb_code text not null,
+  created_at timestamp default now() not null
+);
+
+create table translations (
+  id bigint not null primary key,
+  source_language_id bigint references languages (id),
+  target_language_id bigint references languages (id),
+  source_text text,
+  target_text text,
+  proficiency smallint,
+  created_at timestamp default now() not null,
+  created_by uuid references profiles (id)
+);
+
+create table contribution_types (
+  id serial not null primary key,
+  name text not null,
+  schema jsonb not null,
+  validation_rules jsonb,
+  required_fields text[] not null
+);
+
+create table posts (
+  id bigint not null primary key,
+  title text,
+  created_at timestamp default now() not null,
+  content text,
+  views integer,
+  user_id uuid references profiles (id)
+);
+
+create table contributions (
+  id uuid default uuid_generate_v4() primary key,
+  type_id integer references contribution_types (id),
+  content jsonb not null,
+  metadata jsonb,
+  created_by uuid references profiles (id),
+  created_at timestamp default now(),
+  labelled boolean not null,
+  annotation jsonb,
+  updated_at timestamp default now()
+);
+
