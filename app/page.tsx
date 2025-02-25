@@ -165,7 +165,7 @@ export default function Home() {
               <Link href="/data">Contribute</Link>
             </Button>
             <Button variant="outline" size="lg" className="bg-gray-50">
-              <Link href="/posts/2">Learn more</Link>
+              <Link href="/posts/2">Read our stories</Link>
             </Button>
           </div>
         </div>

@@ -31,7 +31,8 @@ export default async function PostsPage() {
       )
     `
 		)
-		.returns<PostData[]>();
+		.returns<PostData[]>()
+		.order('created_at', { ascending: false });
 	// .gte('created_at', new Date().toISOString());
 
 	if (error) {
