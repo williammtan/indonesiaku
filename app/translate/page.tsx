@@ -29,6 +29,9 @@ const allLanguages: Language[] = [
   { name: "Banjarese", nllb_code: "bjn_Latn" },
   { name: "Javanese", nllb_code: "jav_Latn" },
   { name: "Sundanese", nllb_code: "sun_Latn" },
+  { name: "Ngaju", nllb_code: "sun_Latn" },
+  { name: "Makassar", nllb_code: "min_Latn" },
+  { name: "Betawi", nllb_code: "jav_Latn" } 
 ];
 
 export default function Component() {
