@@ -3,6 +3,7 @@ import { type NextRequest } from "next/server";
 
 // Environment variables in Next.js are accessed directly from process.env
 const NLLB_ENDPOINT = process.env.NLLB_ENDPOINT;
+const NLLB_ENDPOINT_KEY = process.env.NLLB_ENDPOINT_KEY;
 
 // Define types for the request body
 interface TranslationRequest {
@@ -41,6 +42,7 @@ export async function POST(request: NextRequest) {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				"Authorization": `Basic ${NLLB_ENDPOINT_KEY}`
 			},
 			body: JSON.stringify({
 				source: [text],
